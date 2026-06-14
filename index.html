@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arunkumar R — IT Infrastructure Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:        #0A0E1A;
+      --surface:   #111827;
+      --border:    #1E293B;
+      --accent:    #00D4FF;
+      --accent2:   #7C3AED;
+      --text:      #E2E8F0;
+      --muted:     #64748B;
+      --green:     #10B981;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-display);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(10,14,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 80px 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .glow-1 {
+      background: rgba(0,212,255,0.08);
+      top: -100px; left: -100px;
+    }
+    .glow-2 {
+      background: rgba(124,58,237,0.08);
+      bottom: -100px; right: -100px;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto; width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      border: 1px solid rgba(0,212,255,0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.1em;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+    h1 span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      padding: 0.75rem 1.75rem;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.25s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-stats {
+      margin-top: 4rem;
+      display: flex; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--font-mono);
+    }
+    .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1.2rem; font-size: 1rem; line-height: 1.75; }
+    .terminal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .terminal-header {
+      padding: 0.75rem 1rem;
+      background: var(--border);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .term-dot.red { background: #FF5F57; }
+    .term-dot.yellow { background: #FEBC2E; }
+    .term-dot.green { background: #28C840; }
+    .terminal-body {
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 2;
+    }
+    .t-prompt { color: var(--accent); }
+    .t-cmd { color: var(--text); }
+    .t-out { color: var(--green); }
+    .t-muted { color: var(--muted); }
+
+    /* ── SKILLS ── */
+    #skills { }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.25s, transform 0.25s;
+      cursor: default;
+    }
+    .skill-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .skill-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .skill-cat {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .skill-items {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 0.75rem;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(0,212,255,0.07);
+      color: var(--accent);
+      border: 1px solid rgba(0,212,255,0.15);
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .exp-timeline { position: relative; }
+    .exp-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2));
+    }
+    .exp-item {
+      padding-left: 2.5rem;
+      margin-bottom: 3.5rem;
+      position: relative;
+    }
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: -5px; top: 6px;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+    .exp-period {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+    .exp-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+    .exp-company {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .exp-bullets { list-style: none; }
+    .exp-bullets li {
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 0.35rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.6;
+    }
+    .exp-bullets li::before {
+      content: '▸';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-size: 0.7rem;
+      top: 0.45rem;
+    }
+
+    /* ── CONTACT ── */
+    #contact { }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .contact-info h2 { margin-bottom: 1rem; }
+    .contact-info p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); transform: translateX(4px); }
+    .contact-link-icon { font-size: 1.1rem; }
+    .contact-link-text { font-size: 0.9rem; }
+    .contact-link-label { font-size: 0.7rem; color: var(--muted); font-family: var(--font-mono); }
+
+    .contact-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    input, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus { border-color: var(--accent); }
+    textarea { min-height: 120px; resize: vertical; }
+    #form-status { font-size: 0.85rem; margin-top: 0.75rem; min-height: 1.2em; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+    }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">ARUN@INFRA:~$</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="grid-bg"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      AVAILABLE FOR NEW OPPORTUNITIES
+    </div>
+    <h1>Arunkumar R<br><span>IT Infrastructure</span><br>Engineer</h1>
+    <p class="hero-sub">
+      5+ years building and supporting large-scale enterprise infrastructure — from L1/L2 helpdesk to AWS cloud, Active Directory, and beyond.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">↗ Get In Touch</a>
+      <a href="#experience" class="btn btn-outline">View Experience</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">5+</span>
+        <span class="stat-label">Years Experience</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">1500+</span>
+        <span class="stat-label">Users Supported</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">95%+</span>
+        <span class="stat-label">SLA Compliance</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">L1/L2</span>
+        <span class="stat-label">Support Level</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid fade-in">
+      <div class="about-text">
+        <p class="section-label">// about me</p>
+        <h2>Results-driven infra engineer with a cloud-first mindset</h2>
+        <p>I'm an IT Infrastructure & Service Desk Engineer with 5+ years of experience supporting large-scale enterprise and manufacturing environments at Foxconn and Wheels India.</p>
+        <p>My work spans the full stack of IT operations — from resolving high-volume incidents and managing Active Directory, to deploying cloud infrastructure on AWS and collaborating with SOC teams on security incidents.</p>
+        <p>I thrive on making systems reliable, automating repetitive work, and keeping end users productive.</p>
+      </div>
+      <div class="terminal">
+        <div class="terminal-header">
+          <span class="term-dot red"></span>
+          <span class="term-dot yellow"></span>
+          <span class="term-dot green"></span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">arun@infra</span><span class="t-muted">:~$ </span><span class="t-cmd">cat profile.json</span></div>
+          <div class="t-out">{</div>
+          <div class="t-out">&nbsp;&nbsp;"name": "Arunkumar R",</div>
+          <div class="t-out">&nbsp;&nbsp;"role": "IT Infrastructure Engineer",</div>
+          <div class="t-out">&nbsp;&nbsp;"location": "Chennai, India",</div>
+          <div class="t-out">&nbsp;&nbsp;"experience": "5+ years",</div>
+          <div class="t-out">&nbsp;&nbsp;"email": "arunajith2710@gmail.com",</div>
+          <div class="t-out">&nbsp;&nbsp;"phone": "+91 9176568596",</div>
+          <div class="t-out">&nbsp;&nbsp;"cloud": ["AWS", "IAM", "EC2"],</div>
+          <div class="t-out">&nbsp;&nbsp;"os": ["Windows", "Linux"],</div>
+          <div class="t-out">&nbsp;&nbsp;"languages": ["English", "Tamil"]</div>
+          <div class="t-out">}</div>
+          <div><span class="t-prompt">arun@infra</span><span class="t-muted">:~$ </span><span class="t-cmd">_</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label">// technical skills</p>
+    <h2>What I Work With</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card fade-in">
+        <div class="skill-icon">☁️</div>
+        <div class="skill-cat">Cloud & DevOps</div>
+        <div class="skill-items">
+          <span class="tag">AWS EC2</span><span class="tag">S3</span><span class="tag">RDS</span>
+          <span class="tag">IAM</span><span class="tag">VPC</span><span class="tag">CloudWatch</span>
+          <span class="tag">Terraform</span><span class="tag">CloudFormation</span><span class="tag">CI/CD</span>
+        </div>
+      </div>
+
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🖥️</div>
+        <div class="skill-cat">Server & System Admin</div>
+        <div class="skill-items">
+          <span class="tag">Windows Server 2012–2019</span>
+          <span class="tag">Ubuntu</span><span class="tag">CentOS</span>
+          <span class="tag">Patch Management</span><span class="tag">System Monitoring</span>
+        </div>
+      </div>
+
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🔐</div>
+        <div class="skill-cat">Identity & Access</div>
+        <div class="skill-items">
+          <span class="tag">Active Directory</span><span class="tag">Group Policy</span>
+          <span class="tag">Microsoft 365</span><span class="tag">Exchange</span>
+          <span class="tag">Teams</span><span class="tag">OneDrive</span><span class="tag">MFA</span>
+        </div>
+      </div>
+
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🌐</div>
+        <div class="skill-cat">Network & Security</div>
+        <div class="skill-items">
+          <span class="tag">DHCP</span><span class="tag">DNS</span><span class="tag">VPN</span>
+          <span class="tag">TCP/IP</span><span class="tag">FortiGate Firewall</span>
+          <span class="tag">Endpoint Security</span>
+        </div>
+      </div>
+
+      <div class="skill-card fade-in">
+        <div class="skill-icon">📊</div>
+        <div class="skill-cat">Monitoring & Incidents</div>
+        <div class="skill-items">
+          <span class="tag">Zabbix</span><span class="tag">AWS CloudWatch</span>
+          <span class="tag">Prometheus</span><span class="tag">Splunk</span>
+          <span class="tag">Incident Response</span>
+        </div>
+      </div>
+
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🛠️</div>
+        <div class="skill-cat">Tools & Utilities</div>
+        <div class="skill-items">
+          <span class="tag">TeamViewer</span><span class="tag">AnyDesk</span>
+          <span class="tag">PuTTY</span><span class="tag">WinSCP</span>
+          <span class="tag">Git / GitHub</span><span class="tag">MySQL</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label">// work experience</p>
+    <h2>Where I've Worked</h2>
+    <div class="exp-timeline">
+
+      <div class="exp-item fade-in">
+        <div class="exp-period">07/2022 — PRESENT</div>
+        <div class="exp-title">IT Infrastructure Engineer / IT Administration</div>
+        <div class="exp-company">Foxconn Hon Hai Technology India Mega Development Pvt. Ltd. — Chennai</div>
+        <ul class="exp-bullets">
+          <li>Provided L1/L2 technical support across multiple departments, ensuring high system availability and user satisfaction.</li>
+          <li>Managed full incident lifecycle via ticketing systems, consistently meeting SLA targets.</li>
+          <li>Administered Windows, Linux, and Microsoft 365 services (Outlook, Teams, OneDrive).</li>
+          <li>Handled complete user lifecycle in Active Directory — onboarding, provisioning, offboarding, and security compliance.</li>
+          <li>Troubleshot DNS, DHCP, TCP/IP, and network connectivity issues to maintain uninterrupted operations.</li>
+          <li>Collaborated with SOC teams to investigate and resolve security incidents.</li>
+          <li>Managed MySQL databases: backups, restoration, and basic maintenance for data integrity.</li>
+          <li>Supported ISO and compliance audits with documentation and system readiness.</li>
+          <li>Coordinated vendor relations for hardware procurement, warranty claims, and AMC management.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-period">03/2021 — 07/2022</div>
+        <div class="exp-title">System Administrator / Service Desk Engineer</div>
+        <div class="exp-company">Wheels India Pvt. Ltd. — Chennai</div>
+        <ul class="exp-bullets">
+          <li>Delivered L1/L2 IT support to 1,500+ users across multiple manufacturing plants.</li>
+          <li>Resolved hardware, software, VPN, and network issues within defined SLA timelines.</li>
+          <li>Managed Active Directory: user accounts, group policies, and access permissions.</li>
+          <li>Monitored server performance using Zabbix for proactive issue detection.</li>
+          <li>Executed patch management, antivirus updates, and backup validation processes.</li>
+          <li>Achieved 95%+ SLA compliance in ticket resolution.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="contact-info fade-in">
+        <p class="section-label">// contact</p>
+        <h2>Let's Build Something Together</h2>
+        <p>Open to IT infrastructure roles, cloud engineering positions, and system administration opportunities. Based in Chennai, open to remote work.</p>
+        <div class="contact-links">
+          <a href="mailto:arunajith2710@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉️</span>
+            <div>
+              <div class="contact-link-label">EMAIL</div>
+              <div class="contact-link-text">arunajith2710@gmail.com</div>
+            </div>
+          </a>
+          <a href="tel:+919176568596" class="contact-link">
+            <span class="contact-link-icon">📱</span>
+            <div>
+              <div class="contact-link-label">PHONE</div>
+              <div class="contact-link-text">+91 9176568596</div>
+            </div>
+          </a>
+          <a href="https://linkedin.com" target="_blank" class="contact-link">
+            <span class="contact-link-icon">💼</span>
+            <div>
+              <div class="contact-link-label">LINKEDIN</div>
+              <div class="contact-link-text">Connect on LinkedIn</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form fade-in">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="john@company.com" />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Tell me about the opportunity..."></textarea>
+        </div>
+        <button class="btn btn-primary" id="send-btn" onclick="handleSend()" style="width:100%; justify-content:center;">
+          Send Message ↗
+        </button>
+        <div id="form-status"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Arunkumar R — IT Infrastructure Engineer — Chennai, India</p>
+  <p style="margin-top:6px; font-size:0.7rem; color:#334155;">Built with HTML · CSS · JavaScript · Deployed on Vercel</p>
+</footer>
+
+<script>
+  // ── Intersection Observer for fade-in ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── Typing cursor blink ──
+  const cursor = document.querySelector('.terminal-body div:last-child .t-cmd');
+  if (cursor) {
+    setInterval(() => {
+      cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+    }, 600);
+  }
+
+  // ── Contact form handler ──
+  function handleSend() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const status = document.getElementById('form-status');
+    const btn = document.getElementById('send-btn');
+
+    if (!name || !email || !message) {
+      status.style.color = '#f87171';
+      status.textContent = '⚠ Please fill in all fields.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      status.style.color = '#f87171';
+      status.textContent = '⚠ Please enter a valid email address.';
+      return;
+    }
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    // Simulate send (replace with Formspree or EmailJS for real sending)
+    setTimeout(() => {
+      status.style.color = '#10B981';
+      status.textContent = '✓ Message sent! Arunkumar will get back to you soon.';
+      btn.textContent = 'Message Sent ✓';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('message').value = '';
+    }, 1200);
+  }
+
+  // ── Active nav highlight on scroll ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 80;
+      if (scrollY >= sectionTop) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.style.color = link.getAttribute('href') === `#${current}` ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
